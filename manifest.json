@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+
+    "name": "SoundCloudOG",
+    "short_name": "SoundCloudOG",
+    "description": "SoundCloudOG lets you customize your stream so that you aren't listening to reposts, or songs that are too short/too long.",
+    "version": "1.4",
+    "author": "Noam Lerner",
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "options.html"
+    },
+    "permissions": [
+        "storage"
+    ],
+    "content_scripts": [{
+        "matches": ["https://soundcloud.com/*"],
+        "js": ["script.js"]
+    }],
+    "options_page": "options.html"
+}
