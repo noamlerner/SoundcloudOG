@@ -67,7 +67,7 @@ function handleScroll() {
 
 function repeat() {
     var posts = document.getElementsByClassName('soundList__item');
-    if (posts.length < 5) {
+    if (posts.length < 5 && options.autoScroll && scrolling) {
         window.scrollBy(0, 1000);
         iScrolled = true;
     }
