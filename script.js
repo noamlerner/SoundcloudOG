@@ -77,7 +77,7 @@ function repeat() {
             posts[i].parentNode.removeChild(posts[i]);
         }
     }
-    var playback = document.getElementsByClassName("playControls g-z-index-header visible")[0];
+    var playback = document.getElementsByClassName("playControls g-z-index-header m-visible")[0];
     if (playback !== undefined) {
         handleScroll();
         var curSongHolder = playback.getElementsByTagName('a')[2];
