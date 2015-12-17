@@ -64,7 +64,16 @@ function handleScroll() {
     }
     document.execCommand('scroll');
 }
-
+function containsSkipUser(innerHTML, users){
+    var html = innerHTML.toUpperCase();
+    var contained = false;
+    users.forEach(function(user){
+        if(html.indexOf(user.toUpperCase())!== -1){
+            contained =  true;
+        }
+    });
+    return contained;
+}
 function repeat() {
     var posts = document.getElementsByClassName('soundList__item');
     if (posts.length < 5 && options.autoScroll && scrolling) {
@@ -72,7 +81,9 @@ function repeat() {
         iScrolled = true;
     }
     for (var i = 0; i < posts.length; i++) {
-        if (options.skipReposts && posts[i].innerHTML.indexOf('Reposted') !== -1) {
+        var addToSkip =  posts[i].innerHTML.indexOf('Reposted') !== -1 && ((options.skipReposts) ||
+            (options.skipUser &&  containsSkipUser(posts[i].innerHTML, options.skipUsers) ));
+        if (addToSkip) {
             skip.push(posts[i].getElementsByClassName("soundTitle__title")[0].getElementsByTagName('span')[0].innerHTML);
             posts[i].parentNode.removeChild(posts[i]);
         }
@@ -105,11 +116,13 @@ function skipSong() {
 
 chrome.storage.sync.get({
     skipReposts: true,
+    autoScroll: true,
     skipLong: false,
     skipShort: false,
-    autoScroll: true,
+    skipUser:false,
     shorterThan: '30',
-    longerThan: '1:0:0'
+    longerThan: '1:0:0',
+    skipUsers:[]
 }, function(items) {
     options = items;
     options.shorterThan = options.shorterThan.split(':').reverse();
