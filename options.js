@@ -12,6 +12,7 @@ function save_options() {
     options.skipLong = document.getElementById('skipLong').checked;
     options.longerThan = document.getElementById('longerThan').value;
     options.skipUser = document.getElementById('skipUser').checked;
+    options.scrollStopKey = document.getElementById('scrollStopKey').value.toUpperCase();
     options.skipUsers = skipUsersArr;
     console.log(options);
     chrome.storage.sync.set(options, function() {
@@ -35,6 +36,7 @@ function restore_options() {
         skipUser:false,
         shorterThan: '30',
         longerThan: '1:0:0',
+        scrollStopKey:'',
         skipUsers:[]
     }, function(items) {
         Object.keys(items).forEach(function assignVals(key) {

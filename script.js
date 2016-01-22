@@ -44,7 +44,7 @@ var scrollingTimeout, iScrolled = false,
 function scrollEvent() {
     if (options.autoScroll) {
         document.addEventListener('scroll', function() {
-            if (!iScrolled) {
+            if (!iScrolled && scrolling) {
                 clearTimeout(scrollingTimeout);
                 scrolling = false;
                 scrollingTimeout = setTimeout(function() {
@@ -59,8 +59,10 @@ function scrollEvent() {
 
 function handleScroll() {
     if (options.autoScroll && scrolling) {
-        window.scrollBy(0, 1000);
+        var neg = Math.random()<0.1 ? -1 : 1;
+        window.scrollBy(0, 1000 * neg);
         iScrolled = true;
+        console.log('scrolllllllll')
     }
     document.execCommand('scroll');
 }
@@ -122,11 +124,23 @@ chrome.storage.sync.get({
     skipUser:false,
     shorterThan: '30',
     longerThan: '1:0:0',
+    scrollStopKey:'',
     skipUsers:[]
 }, function(items) {
     options = items;
     options.shorterThan = options.shorterThan.split(':').reverse();
     options.longerThan = options.longerThan.split(':').reverse();
+    init();
     repeat();
     scrollEvent();
 });
+function init(){
+    if(options.scrollStopKey && options.autoScroll){
+        document.addEventListener('keydown',function(e){
+            if(String.fromCharCode(e.keyCode) === options.scrollStopKey){
+                scrolling = !scrolling;
+                console.log('scrolling='+scrolling)
+            }   
+        })
+    }
+}
